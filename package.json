@@ -1,0 +1,17 @@
+{
+  "name": "@cminton/corollary",
+  "version": "0.0.0",
+  "description": "A framework for defining and evaluating complex logical systems. (A cool bool rule tool.)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rule",
+    "bool",
+    "rules",
+    "logic"
+  ],
+  "author": "Connor Minton",
+  "license": "ISC"
+}
