@@ -1,3 +1,5 @@
+const util = require('./util');
+
 const _rules = {};
 
 function and(...rules) {
@@ -5,11 +7,7 @@ function and(...rules) {
     let result = true;
 
     for (rule of rules) {
-      let ruleFunc;
-      if (typeof rule === 'string')
-        ruleFunc = _rules[rule];
-      else
-        ruleFunc = rule;
+      const ruleFunc = util.createRuleFunc(rule, _rules);
 
       if (!ruleFunc(thing)) {
         result = false;
@@ -26,11 +24,7 @@ function or(...rules) {
     let result = false;
 
     for (rule of rules) {
-      let ruleFunc;
-      if (typeof rule === 'string')
-        ruleFunc = _rules[rule];
-      else
-        ruleFunc = rule;
+      const ruleFunc = util.createRuleFunc(rule, _rules);
 
       if (ruleFunc(thing)) {
         result = true;
@@ -44,12 +38,7 @@ function or(...rules) {
 
 function not(rule) {
   return thing => {
-    let ruleFunc;
-    if (typeof rule === 'string')
-      ruleFunc = _rules[rule];
-    else
-      ruleFunc = rule;
-
+    const ruleFunc = util.createRuleFunc(rule, _rules);
     return !ruleFunc(thing);
   }
 }
@@ -59,12 +48,7 @@ function createRule(label, statement) {
 }
 
 function ask(rule, thing) {
-  let ruleFunc;
-  if (typeof rule === 'string')
-    ruleFunc = _rules[rule];
-  else
-    ruleFunc = rule;
-
+  const ruleFunc = util.createRuleFunc(rule, _rules);
   return ruleFunc(thing);
 }
 
