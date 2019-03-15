@@ -1,5 +1,5 @@
 {
-  "name": "@cminton/corollary",
+  "name": "corollary",
   "version": "0.0.0",
   "description": "A framework for defining and evaluating complex logical systems. (A cool bool rule tool.)",
   "main": "index.js",
