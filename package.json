@@ -15,6 +15,7 @@
   "author": "Connor Minton",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^24.3.1"
+    "jest": "^24.3.1",
+    "uuid": "^3.3.2"
   }
 }

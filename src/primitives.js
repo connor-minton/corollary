@@ -1,13 +1,16 @@
 const util = require('./util');
+const Context = require('./context');
 
-function and(rulesRepo, ...rules) {
-  return thing => {
+function and(...rules) {
+  return (thing, context) => {
+    if (!(context instanceof Context))
+      context = Context.defaultContext;
+
     let result = true;
-
     for (rule of rules) {
-      const ruleFunc = util.createRuleFunc(rule, rulesRepo);
+      const ruleFunc = util.createRuleFunc(rule, context);
 
-      if (!ruleFunc(thing)) {
+      if (!ruleFunc(thing, context)) {
         result = false;
         break;
       }
@@ -17,14 +20,16 @@ function and(rulesRepo, ...rules) {
   }
 }
 
-function or(rulesRepo, ...rules) {
-  return thing => {
+function or(...rules) {
+  return (thing, context) => {
+    if (!(context instanceof Context))
+      context = Context.defaultContext;
+
     let result = false;
-
     for (rule of rules) {
-      const ruleFunc = util.createRuleFunc(rule, rulesRepo);
+      const ruleFunc = util.createRuleFunc(rule, context);
 
-      if (ruleFunc(thing)) {
+      if (ruleFunc(thing, context)) {
         result = true;
         break;
       }
@@ -34,10 +39,13 @@ function or(rulesRepo, ...rules) {
   }
 }
 
-function not(rulesRepo, rule) {
-  return thing => {
-    const ruleFunc = util.createRuleFunc(rule, rulesRepo);
-    return !ruleFunc(thing);
+function not(rule) {
+  return (thing, context) => {
+    if (!(context instanceof Context))
+      context = Context.defaultContext;
+
+    const ruleFunc = util.createRuleFunc(rule, context);
+    return !ruleFunc(thing, context);
   }
 }
 

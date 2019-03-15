@@ -1,26 +1,47 @@
 const util = require('./util');
 const primitives = require('./primitives');
+const Context = require('./context');
 
-const _rules = {};
+const contexts = {};
 
 function and(...rules) {
-  return primitives.and(_rules, ...rules);
+  return primitives.and(...rules);
 }
 
 function or(...rules) {
-  return primitives.or(_rules, ...rules);
+  return primitives.or(...rules);
 }
 
 function not(...rules) {
-  return primitives.not(_rules, ...rules);
+  return primitives.not(...rules);
 }
 
 function createRule(label, statement) {
-  _rules[label] = statement;
+  Context.defaultContext.createRule(label, statement);
+}
+
+function createContext(name) {
+  if (!name || typeof name !== 'string')
+    throw new Error('a context must have a non-empty string `name`');
+
+  const _context = new Context(name);
+  contexts[name] = _context;
+  return _context;
+}
+
+function getContext(name) {
+  if (!name || typeof name !== 'string')
+    throw new Error('a context must have a non-empty string `name`');
+
+  let _context = contexts[name];
+  if (!_context)
+    throw new Error(`context '${name}' does not exist`);
+
+  return _context;
 }
 
 function ask(rule, thing) {
-  const ruleFunc = util.createRuleFunc(rule, _rules);
+  const ruleFunc = util.createRuleFunc(rule, Context.defaultContext);
   return ruleFunc(thing);
 }
 
@@ -29,5 +50,7 @@ module.exports = {
   or,
   not,
   createRule,
+  createContext,
+  getContext,
   ask
 };

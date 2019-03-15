@@ -1,8 +1,8 @@
-function createRuleFunc(rule, rules) {
+function createRuleFunc(rule, context) {
   let ruleFunc;
 
   if (typeof rule === 'string')
-    ruleFunc = rules[rule];
+    ruleFunc = context.rules[rule];
   else
     ruleFunc = rule;
 
