@@ -1,46 +1,18 @@
 const util = require('./util');
+const primitives = require('./primitives');
 
 const _rules = {};
 
 function and(...rules) {
-  return thing => {
-    let result = true;
-
-    for (rule of rules) {
-      const ruleFunc = util.createRuleFunc(rule, _rules);
-
-      if (!ruleFunc(thing)) {
-        result = false;
-        break;
-      }
-    }
-
-    return result;
-  }
+  return primitives.and(_rules, ...rules);
 }
 
 function or(...rules) {
-  return thing => {
-    let result = false;
-
-    for (rule of rules) {
-      const ruleFunc = util.createRuleFunc(rule, _rules);
-
-      if (ruleFunc(thing)) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
-  }
+  return primitives.or(_rules, ...rules);
 }
 
-function not(rule) {
-  return thing => {
-    const ruleFunc = util.createRuleFunc(rule, _rules);
-    return !ruleFunc(thing);
-  }
+function not(...rules) {
+  return primitives.not(_rules, ...rules);
 }
 
 function createRule(label, statement) {
