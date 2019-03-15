@@ -4,7 +4,7 @@
   "description": "A framework for defining and evaluating complex logical systems. (A cool bool rule tool.)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "rule",
@@ -13,5 +13,8 @@
     "logic"
   ],
   "author": "Connor Minton",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.3.1"
+  }
 }
