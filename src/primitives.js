@@ -17,7 +17,7 @@ function and(...rules) {
     }
 
     return result;
-  }
+  };
 }
 
 function or(...rules) {
@@ -36,7 +36,7 @@ function or(...rules) {
     }
 
     return result;
-  }
+  };
 }
 
 function not(rule) {
@@ -46,11 +46,42 @@ function not(rule) {
 
     const ruleFunc = util.createRuleFunc(rule, context);
     return !ruleFunc(thing, context);
-  }
+  };
+}
+
+function isInList(rule, list) {
+  return (thing, context) => {
+    if (!(context instanceof Context))
+      context = Context.defaultContext;
+
+    const ruleFunc = util.createRuleFunc(rule, context);
+    const value = ruleFunc(thing, context);
+
+    for (let item of list) {
+      if (value === item)
+        return true;
+    }
+
+    return false;
+  };
+}
+
+function isInSet(rule, set) {
+  return (thing, context) => {
+    if (!(context instanceof Context))
+      context = Context.defaultContext;
+
+    const ruleFunc = util.createRuleFunc(rule, context);
+    const value = ruleFunc(thing, context);
+
+    return set.has(value);
+  };
 }
 
 module.exports = {
   and,
   or,
-  not
+  not,
+  isInList,
+  isInSet
 };

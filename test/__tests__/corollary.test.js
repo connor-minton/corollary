@@ -1,4 +1,14 @@
-const { and, or, not, createRule, ask } = require('../..');
+const { and, or, not, createRule, ask, isInList, isInSet, createContext } = require('../..');
+const uuid = require('uuid/v4');
+
+test('rules can return a non-boolean value', () => {
+  const testCtx = createContext(uuid());
+  testCtx.createRule('itColor', it => it.color);
+  const thing1 = { color: 'blue' };
+  const thing2 = { color: 'brown' };
+  expect(testCtx.ask('itColor', thing1)).toBe('blue');
+  expect(testCtx.ask('itColor', thing2)).toBe('brown');
+});
 
 test('corollary#and()', () => {
   const rule = and(
@@ -96,4 +106,32 @@ test('corollary#createRule/ask(): can create rules and ask questions', () => {
 
   expect(ask('isNice', today)).toBe(true);
   expect(ask('isNice', tomorrow)).toBe(false);
+});
+
+test('corollary#isInList()', () => {
+  const testCtx = createContext(uuid());
+  testCtx.createRule('itColor', it => it.color);
+
+  const colors = ['yellow', 'green', 'blue'];
+  const thing1 = { color: 'blue' };
+  const thing2 = { color: 'green' };
+  const thing3 = { color: 'red' };
+
+  expect(testCtx.ask(isInList('itColor', colors), thing1)).toBe(true);
+  expect(testCtx.ask(isInList('itColor', colors), thing2)).toBe(true);
+  expect(testCtx.ask(isInList('itColor', colors), thing3)).toBe(false);
+});
+
+test('corollary#isInSet()', () => {
+  const testCtx = createContext(uuid());
+  testCtx.createRule('itColor', it => it.color);
+
+  const colors = new Set(['yellow', 'green', 'blue']);
+  const thing1 = { color: 'blue' };
+  const thing2 = { color: 'green' };
+  const thing3 = { color: 'red' };
+
+  expect(testCtx.ask(isInSet('itColor', colors), thing1)).toBe(true);
+  expect(testCtx.ask(isInSet('itColor', colors), thing2)).toBe(true);
+  expect(testCtx.ask(isInSet('itColor', colors), thing3)).toBe(false);
 });

@@ -16,6 +16,14 @@ function not(...rules) {
   return primitives.not(...rules);
 }
 
+function isInList(rule, list) {
+  return primitives.isInList(rule, list);
+}
+
+function isInSet(rule, set) {
+  return primitives.isInSet(rule, set);
+}
+
 function createRule(label, statement) {
   Context.defaultContext.createRule(label, statement);
 }
@@ -49,6 +57,8 @@ module.exports = {
   and,
   or,
   not,
+  isInList,
+  isInSet,
   createRule,
   createContext,
   getContext,
